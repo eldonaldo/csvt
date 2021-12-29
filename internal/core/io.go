@@ -63,3 +63,22 @@ func ParseCSV(data string, hasHeader bool) CSVObject {
 
 	return csvRows
 }
+
+// CSVSliceToString converts a csv [][]string to a string
+func CSVSliceToString(slice [][]string) string {
+	var stringBuilder strings.Builder
+	for j, row := range slice {
+		for i, value := range row {
+			if i != 0 {
+				stringBuilder.WriteString(",")
+			}
+			stringBuilder.WriteString(value)
+		}
+
+		if j != len(slice)-1 {
+			stringBuilder.WriteString("\n")
+		}
+	}
+
+	return stringBuilder.String()
+}
