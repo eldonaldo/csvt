@@ -27,6 +27,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const (
+	FlagNoHeader = "no-header"
+)
+
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "csvt",
@@ -61,4 +65,5 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().BoolP(FlagNoHeader, "n", false, "If set indicates that the file has no header")
 }
