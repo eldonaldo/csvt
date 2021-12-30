@@ -101,3 +101,18 @@ func (c *CSVObject) FilterColumns(fields []string) *CSVObject {
 	c.Headers = newHeaders
 	return c
 }
+
+// Flatten flattens the csv into a one liner
+func (c *CSVObject) Flatten(separator string) (string, error) {
+	if len(c.Headers) != 1 {
+		return "", errors.New("cannot flatten since csv contains more than one column")
+	}
+
+	field := c.Headers[0]
+	retain := make([]string, len(c.Rows))
+	for i, row := range c.Rows {
+		retain[i] = row.fields[field]
+	}
+
+	return strings.Join(retain, separator), nil
+}
