@@ -28,9 +28,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const (
-	FlagNoHeader  = "no-header"
-	FlagSeparator = "sep"
+var (
+	FlagNoHeader    bool
+	FlagSeparator   string
+	FlagUseTestData bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -55,7 +56,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.PersistentFlags().Bool(FlagNoHeader, false, "If set indicates that the file has no header")
-	rootCmd.PersistentFlags().String(FlagSeparator, internal.DefaultSep, "Separator, default ,")
+	rootCmd.PersistentFlags().BoolVarP(&FlagNoHeader, "no-header", "n", false, "If set indicates that the file has no header")
+	rootCmd.PersistentFlags().StringVarP(&FlagSeparator, "sep", "s", internal.DefaultSep, "Separator, default is ','")
+	rootCmd.PersistentFlags().BoolVarP(&FlagUseTestData, "test-data", "t", false, "If true, uses hard coded test data as csv input instead of stdin")
 }

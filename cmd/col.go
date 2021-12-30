@@ -27,6 +27,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	FlagColNames string
+)
+
 // colCmd represents the col command
 var colCmd = &cobra.Command{
 	Use:   "col",
@@ -38,10 +42,12 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		//name, _ := cmd.Flags().GetString("name")
-		noHeader, _ := cmd.Flags().GetBool(FlagNoHeader)
-		//csv := internal.ParseCSV(internal.ReadFromStdIn(), !noHeader)
-		csv := internal.ParseCSV("a,b,c\n1,2,3", !noHeader)
+		var csv internal.CSVObject
+		if FlagUseTestData {
+			csv = internal.ParseCSV("col1,col2,col3\nval1,val2,val3", FlagNoHeader)
+		} else {
+			csv = internal.ParseCSV(internal.ReadFromStdIn(), FlagNoHeader)
+		}
 
 		fmt.Println(csv.String())
 	},
@@ -49,17 +55,6 @@ to quickly create a Cobra application.`,
 
 func init() {
 	filterCmd.AddCommand(colCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// colCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// colCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
-	colCmd.Flags().String("name", "", "Colum names to keep")
+	colCmd.Flags().StringVar(&FlagColNames, "name", "", "Colum names to keep")
 	//_ = colCmd.MarkFlagRequired("name")
 }
