@@ -32,51 +32,54 @@ func TestReadFromStdIn(t *testing.T) {
 
 func TestParseCSV_SingleRow(t *testing.T) {
 	csvActual := ParseCSV("a,b,c\n1,2,3", true)
-	csvExpected := make(CSVObject, 0)
 
+	csvRows := make([]CSVRow, 1)
 	csvRow1 := make(CSVRow)
 	csvRow1["a"] = "1"
 	csvRow1["b"] = "2"
 	csvRow1["c"] = "3"
-	csvExpected = append(csvExpected, csvRow1)
+	csvRows = append(csvRows, csvRow1)
+	csvExpected := CSVObject{Header: []string{"a", "b", "c"}, Rows: csvRows}
 
 	assert.Equal(t, true, reflect.DeepEqual(csvActual, csvExpected))
 }
 
 func TestParseCSV_MultipleRows(t *testing.T) {
 	csvActual := ParseCSV("a,b,c\n1,2,3\n4,5,6", true)
-	csvExpected := make(CSVObject, 0)
 
+	csvRows := make([]CSVRow, 2)
 	csvRow1 := make(CSVRow)
 	csvRow1["a"] = "1"
 	csvRow1["b"] = "2"
 	csvRow1["c"] = "3"
-	csvExpected = append(csvExpected, csvRow1)
+	csvRows = append(csvRows, csvRow1)
 
 	csvRow2 := make(CSVRow)
 	csvRow2["a"] = "4"
 	csvRow2["b"] = "5"
 	csvRow2["c"] = "6"
-	csvExpected = append(csvExpected, csvRow2)
+	csvRows = append(csvRows, csvRow2)
+	csvExpected := CSVObject{Header: []string{"a", "b", "c"}, Rows: csvRows}
 
 	assert.Equal(t, true, reflect.DeepEqual(csvActual, csvExpected))
 }
 
 func TestParseCSV_WithoutHeaders(t *testing.T) {
 	csvActual := ParseCSV("1,2,3\n4,5,6", false)
-	csvExpected := make(CSVObject, 0)
 
+	csvRows := make([]CSVRow, 2)
 	csvRow1 := make(CSVRow)
 	csvRow1["0"] = "1"
 	csvRow1["1"] = "2"
 	csvRow1["2"] = "3"
-	csvExpected = append(csvExpected, csvRow1)
+	csvRows = append(csvRows, csvRow1)
 
 	csvRow2 := make(CSVRow)
 	csvRow2["0"] = "4"
 	csvRow2["1"] = "5"
 	csvRow2["2"] = "6"
-	csvExpected = append(csvExpected, csvRow2)
+	csvRows = append(csvRows, csvRow2)
+	csvExpected := CSVObject{Header: []string{}, Rows: csvRows}
 
 	assert.Equal(t, true, reflect.DeepEqual(csvActual, csvExpected))
 }
@@ -87,19 +90,20 @@ func TestParseCSV_FromFile(t *testing.T) {
 	data, _ := r.ReadAll()
 
 	csvActual := ParseCSV(CSVSliceToString(data), true)
-	csvExpected := make(CSVObject, 0)
 
+	csvRows := make([]CSVRow, 2)
 	csvRow1 := make(CSVRow)
 	csvRow1["a"] = "1"
 	csvRow1["b"] = "2"
 	csvRow1["c"] = "3"
-	csvExpected = append(csvExpected, csvRow1)
+	csvRows = append(csvRows, csvRow1)
 
 	csvRow2 := make(CSVRow)
 	csvRow2["a"] = "4"
 	csvRow2["b"] = "5"
 	csvRow2["c"] = "6"
-	csvExpected = append(csvExpected, csvRow2)
+	csvRows = append(csvRows, csvRow2)
+	csvExpected := CSVObject{Header: []string{"a", "b", "c"}, Rows: csvRows}
 
 	assert.Equal(t, csvActual, csvExpected)
 }

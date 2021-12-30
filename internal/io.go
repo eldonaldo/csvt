@@ -9,11 +9,10 @@ import (
 	"strings"
 )
 
-// CSVRow represents a column name to value map
-type CSVRow map[string]string
-
-// CSVObject is a list of csv rows
-type CSVObject []CSVRow
+const (
+	CRLF       = "\n"
+	DefaultSep = ","
+)
 
 // ReadFromStdIn reads piped data from std in
 func ReadFromStdIn() string {
@@ -26,20 +25,22 @@ func ReadFromStdIn() string {
 func ParseCSV(data string, hasHeader bool) CSVObject {
 	stringReader := strings.NewReader(data)
 	csvReader := csv.NewReader(stringReader)
-	headerMap := make(map[int]string)
+	header := make([]string, 0)
 
 	// Parse header, if any
 	if hasHeader {
 		row, err := csvReader.Read()
 		CheckIfErrorAndPanic(err)
 
-		for i, name := range row {
-			headerMap[i] = name
+		for _, name := range row {
+			header = append(header, name)
 		}
 	}
 
 	// Parse data
-	csvRows := make(CSVObject, 0)
+	csvRows := make([]CSVRow, 0)
+	orderRead := false
+
 	for {
 		row, err := csvReader.Read()
 		if err != nil {
@@ -50,18 +51,25 @@ func ParseCSV(data string, hasHeader bool) CSVObject {
 
 		csvRow := make(CSVRow)
 		for i, value := range row {
-			key := strconv.Itoa(i)
+			strIdx := strconv.Itoa(i)
+
+			if !orderRead && !hasHeader {
+				header = append(header, strIdx)
+			}
+
+			key := strIdx
 			if hasHeader {
-				key = headerMap[i]
+				key = header[i]
 			}
 
 			csvRow[key] = value
 		}
 
 		csvRows = append(csvRows, csvRow)
+		orderRead = true
 	}
 
-	return csvRows
+	return CSVObject{Rows: csvRows, Header: header, hasHeader: hasHeader}
 }
 
 // CSVSliceToString converts a csv [][]string to a string

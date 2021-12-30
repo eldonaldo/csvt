@@ -40,8 +40,10 @@ to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		//name, _ := cmd.Flags().GetString("name")
 		noHeader, _ := cmd.Flags().GetBool(FlagNoHeader)
-		csv := internal.ParseCSV(internal.ReadFromStdIn(), !noHeader)
-		fmt.Println(csv)
+		//csv := internal.ParseCSV(internal.ReadFromStdIn(), !noHeader)
+		csv := internal.ParseCSV("a,b,c\n1,2,3", !noHeader)
+
+		fmt.Println(csv.String())
 	},
 }
 
@@ -59,5 +61,5 @@ func init() {
 	// colCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	colCmd.Flags().String("name", "", "Colum names to keep")
-	_ = colCmd.MarkFlagRequired("name")
+	//_ = colCmd.MarkFlagRequired("name")
 }
