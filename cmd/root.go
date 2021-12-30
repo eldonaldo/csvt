@@ -53,4 +53,5 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&internal.FlagNoHeader, "no-header", "n", false, "If set indicates that the file has no header")
 	rootCmd.PersistentFlags().StringVarP(&internal.FlagSeparator, "sep", "s", ",", "Separator, default is ','")
 	rootCmd.PersistentFlags().BoolVarP(&internal.FlagUseTestData, "test-data", "t", false, "If true, uses hard coded test data as csv input instead of stdin")
+	rootCmd.PersistentFlags().BoolVarP(&internal.FlagDebug, "debug", "d", false, "Print debug information")
 }

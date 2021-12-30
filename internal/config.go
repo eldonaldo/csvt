@@ -8,4 +8,5 @@ var (
 	FlagNoHeader    bool
 	FlagSeparator   string
 	FlagUseTestData bool
+	FlagDebug       bool
 )

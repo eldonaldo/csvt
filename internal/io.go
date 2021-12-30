@@ -66,7 +66,7 @@ func ParseCSV(data string, hasHeader bool) *CSVObject {
 	}
 
 	csvObject.Rows = csvRows
-	csvObject.Header = header
+	csvObject.Headers = header
 	csvObject.hasHeader = hasHeader
 	return csvObject
 }
@@ -92,9 +92,10 @@ func CSVSliceToString(slice [][]string) string {
 
 // ReadCSV reads the csv from stdin or returns test data if the test flag is set
 func ReadCSV() *CSVObject {
+	hasHeader := !FlagNoHeader
 	if FlagUseTestData {
-		return ParseCSV("col1,col2,col3\nval1,val2,val3\nval4,val5,val6", FlagNoHeader)
+		return ParseCSV("col1,col2,col3\nval1,val2,val3\nval4,val5,val6", hasHeader)
 	} else {
-		return ParseCSV(ReadFromStdIn(), FlagNoHeader)
+		return ParseCSV(ReadFromStdIn(), hasHeader)
 	}
 }

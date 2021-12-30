@@ -24,6 +24,7 @@ package cmd
 import (
 	"github.com/eldonaldo/csvt/internal"
 	"github.com/spf13/cobra"
+	"strings"
 )
 
 var (
@@ -41,13 +42,15 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		fields := strings.Split(FlagColNames, ",")
 		csv := internal.ReadCSV()
+		csv.FilterColumns(fields)
 		csv.Print()
 	},
 }
 
 func init() {
 	filterCmd.AddCommand(colCmd)
-	colCmd.Flags().StringVar(&FlagColNames, "name", "", "Colum names to keep")
+	colCmd.Flags().StringVar(&FlagColNames, "name", "", "Colum names to keep after filtering")
 	_ = colCmd.MarkFlagRequired("name")
 }

@@ -39,7 +39,7 @@ func TestParseCSV_SingleRow(t *testing.T) {
 	csvRow1["b"] = "2"
 	csvRow1["c"] = "3"
 	csvRows = append(csvRows, csvRow1)
-	csvExpected := CSVObject{Header: []string{"a", "b", "c"}, Rows: csvRows}
+	csvExpected := CSVObject{Headers: []string{"a", "b", "c"}, Rows: csvRows}
 
 	assert.Equal(t, true, reflect.DeepEqual(csvActual, csvExpected))
 }
@@ -59,7 +59,7 @@ func TestParseCSV_MultipleRows(t *testing.T) {
 	csvRow2["b"] = "5"
 	csvRow2["c"] = "6"
 	csvRows = append(csvRows, csvRow2)
-	csvExpected := CSVObject{Header: []string{"a", "b", "c"}, Rows: csvRows}
+	csvExpected := CSVObject{Headers: []string{"a", "b", "c"}, Rows: csvRows}
 
 	assert.Equal(t, true, reflect.DeepEqual(csvActual, csvExpected))
 }
@@ -79,7 +79,7 @@ func TestParseCSV_WithoutHeaders(t *testing.T) {
 	csvRow2["1"] = "5"
 	csvRow2["2"] = "6"
 	csvRows = append(csvRows, csvRow2)
-	csvExpected := CSVObject{Header: []string{}, Rows: csvRows}
+	csvExpected := CSVObject{Headers: []string{}, Rows: csvRows}
 
 	assert.Equal(t, true, reflect.DeepEqual(csvActual, csvExpected))
 }
@@ -103,7 +103,7 @@ func TestParseCSV_FromFile(t *testing.T) {
 	csvRow2["b"] = "5"
 	csvRow2["c"] = "6"
 	csvRows = append(csvRows, csvRow2)
-	csvExpected := CSVObject{Header: []string{"a", "b", "c"}, Rows: csvRows}
+	csvExpected := CSVObject{Headers: []string{"a", "b", "c"}, Rows: csvRows}
 
 	assert.Equal(t, csvActual, csvExpected)
 }

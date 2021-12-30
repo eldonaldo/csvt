@@ -18,7 +18,7 @@ type CSVRow struct {
 // CSVObject is a list of csv rows
 type CSVObject struct {
 	hasHeader bool
-	Header    []string
+	Headers   []string
 	Rows      []CSVRow
 }
 
@@ -40,13 +40,13 @@ func (c *CSVRow) Get(field string) (string, error) {
 func (c *CSVObject) String() string {
 	var stringBuilder strings.Builder
 	if c.hasHeader {
-		stringBuilder.WriteString(strings.Join(c.Header, FlagSeparator))
+		stringBuilder.WriteString(strings.Join(c.Headers, FlagSeparator))
 		stringBuilder.WriteString(CRLF)
 	}
 
 	for j, row := range c.Rows {
 		r := make([]string, len(row.fields))
-		for i, idx := range c.Header {
+		for i, idx := range c.Headers {
 			r[i] = row.fields[idx]
 		}
 		stringBuilder.WriteString(strings.Join(r, FlagSeparator))
@@ -56,10 +56,48 @@ func (c *CSVObject) String() string {
 		}
 	}
 
+	if FlagDebug {
+		stringBuilder.WriteString(CRLF)
+		stringBuilder.WriteString(CRLF)
+		stringBuilder.WriteString("> DEBUG:")
+		stringBuilder.WriteString(CRLF)
+		stringBuilder.WriteString(fmt.Sprintf(">   Has Header: %t", c.hasHeader))
+		stringBuilder.WriteString(CRLF)
+		stringBuilder.WriteString(fmt.Sprintf(">   Headers: %s", strings.Join(c.Headers, ",")))
+	}
+
 	return stringBuilder.String()
 }
 
 // Print prints the csv to stdout
-func (c *CSVObject) Print() string {
+func (c *CSVObject) Print() {
 	fmt.Println(c.String())
+}
+
+// FilterColumns retains only the given fields
+func (c *CSVObject) FilterColumns(fields []string) *CSVObject {
+	remove := Difference(c.Headers, fields)
+	for _, row := range c.Rows {
+		for _, f := range remove {
+			delete(row.fields, f)
+		}
+	}
+
+	newHeaders := make([]string, 0)
+	for _, val := range c.Headers {
+		retain := false
+		for _, f := range fields {
+			if val == f {
+				retain = true
+				break
+			}
+		}
+
+		if retain {
+			newHeaders = append(newHeaders, val)
+		}
+	}
+
+	c.Headers = newHeaders
+	return c
 }
