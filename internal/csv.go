@@ -2,6 +2,7 @@ package internal
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -56,4 +57,9 @@ func (c *CSVObject) String() string {
 	}
 
 	return stringBuilder.String()
+}
+
+// Print prints the csv to stdout
+func (c *CSVObject) Print() string {
+	fmt.Println(c.String())
 }

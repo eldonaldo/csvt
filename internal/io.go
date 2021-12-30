@@ -89,3 +89,12 @@ func CSVSliceToString(slice [][]string) string {
 
 	return stringBuilder.String()
 }
+
+// ReadCSV reads the csv from stdin or returns test data if the test flag is set
+func ReadCSV() *CSVObject {
+	if FlagUseTestData {
+		return ParseCSV("col1,col2,col3\nval1,val2,val3\nval4,val5,val6", FlagNoHeader)
+	} else {
+		return ParseCSV(ReadFromStdIn(), FlagNoHeader)
+	}
+}

@@ -22,7 +22,6 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"fmt"
 	"github.com/eldonaldo/csvt/internal"
 	"github.com/spf13/cobra"
 )
@@ -42,14 +41,8 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var csv *internal.CSVObject
-		if internal.FlagUseTestData {
-			csv = internal.ParseCSV("col1,col2,col3\nval1,val2,val3", internal.FlagNoHeader)
-		} else {
-			csv = internal.ParseCSV(internal.ReadFromStdIn(), internal.FlagNoHeader)
-		}
-
-		fmt.Println(csv.String())
+		csv := internal.ReadCSV()
+		csv.Print()
 	},
 }
 
