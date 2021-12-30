@@ -9,10 +9,6 @@ import (
 	"strings"
 )
 
-const (
-	CRLF = "\n"
-)
-
 // ReadFromStdIn reads piped data from std in
 func ReadFromStdIn() string {
 	data, err := ioutil.ReadAll(os.Stdin)
@@ -21,10 +17,11 @@ func ReadFromStdIn() string {
 }
 
 // ParseCSV parses the given string as CSV object
-func ParseCSV(data string, hasHeader bool) CSVObject {
+func ParseCSV(data string, hasHeader bool) *CSVObject {
 	stringReader := strings.NewReader(data)
 	csvReader := csv.NewReader(stringReader)
 	header := make([]string, 0)
+	csvObject := &CSVObject{}
 
 	// Parse header, if any
 	if hasHeader {
@@ -48,7 +45,7 @@ func ParseCSV(data string, hasHeader bool) CSVObject {
 			}
 		}
 
-		csvRow := make(CSVRow)
+		csvRow := make(CSVField)
 		for i, value := range row {
 			strIdx := strconv.Itoa(i)
 
@@ -64,11 +61,14 @@ func ParseCSV(data string, hasHeader bool) CSVObject {
 			csvRow[key] = value
 		}
 
-		csvRows = append(csvRows, csvRow)
+		csvRows = append(csvRows, CSVRow{fields: csvRow, csvObject: csvObject})
 		orderRead = true
 	}
 
-	return CSVObject{Rows: csvRows, Header: header, hasHeader: hasHeader}
+	csvObject.Rows = csvRows
+	csvObject.Header = header
+	csvObject.hasHeader = hasHeader
+	return csvObject
 }
 
 // CSVSliceToString converts a csv [][]string to a string

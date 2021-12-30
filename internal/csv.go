@@ -1,11 +1,18 @@
 package internal
 
 import (
+	"errors"
 	"strings"
 )
 
-// CSVRow represents a column name to value map
-type CSVRow map[string]string
+// CSVField represents a column name to value map
+type CSVField = map[string]string
+
+// CSVRow is a column name to value map and a pointer to the csv object
+type CSVRow struct {
+	fields    CSVField
+	csvObject *CSVObject
+}
 
 // CSVObject is a list of csv rows
 type CSVObject struct {
@@ -14,13 +21,21 @@ type CSVObject struct {
 	Rows      []CSVRow
 }
 
-//func (c *CSVRow) Get(field string) (string, error) {
-//	if !c.HasHeader() {
-//		return "", errors.New("CSV has no headers")
-//	}
-//}
+// Get returns the value of the given field
+func (c *CSVRow) Get(field string) (string, error) {
+	if !c.csvObject.hasHeader {
+		return "", errors.New("CSV has no headers")
+	}
 
-// String prints the csv object as
+	value, ok := c.fields[field]
+	if !ok {
+		return "", errors.New("CSV has no field " + field)
+	}
+
+	return value, nil
+}
+
+// String converts the csv object to string representation
 func (c *CSVObject) String() string {
 	var stringBuilder strings.Builder
 	if c.hasHeader {
@@ -29,9 +44,9 @@ func (c *CSVObject) String() string {
 	}
 
 	for j, row := range c.Rows {
-		r := make([]string, len(row))
+		r := make([]string, len(row.fields))
 		for i, idx := range c.Header {
-			r[i] = row[idx]
+			r[i] = row.fields[idx]
 		}
 		stringBuilder.WriteString(strings.Join(r, FlagSeparator))
 

@@ -42,7 +42,7 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var csv internal.CSVObject
+		var csv *internal.CSVObject
 		if internal.FlagUseTestData {
 			csv = internal.ParseCSV("col1,col2,col3\nval1,val2,val3", internal.FlagNoHeader)
 		} else {
