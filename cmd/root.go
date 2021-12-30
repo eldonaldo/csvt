@@ -28,12 +28,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	FlagNoHeader    bool
-	FlagSeparator   string
-	FlagUseTestData bool
-)
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "csvt",
@@ -56,7 +50,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().BoolVarP(&FlagNoHeader, "no-header", "n", false, "If set indicates that the file has no header")
-	rootCmd.PersistentFlags().StringVarP(&FlagSeparator, "sep", "s", internal.DefaultSep, "Separator, default is ','")
-	rootCmd.PersistentFlags().BoolVarP(&FlagUseTestData, "test-data", "t", false, "If true, uses hard coded test data as csv input instead of stdin")
+	rootCmd.PersistentFlags().BoolVarP(&internal.FlagNoHeader, "no-header", "n", false, "If set indicates that the file has no header")
+	rootCmd.PersistentFlags().StringVarP(&internal.FlagSeparator, "sep", "s", ",", "Separator, default is ','")
+	rootCmd.PersistentFlags().BoolVarP(&internal.FlagUseTestData, "test-data", "t", false, "If true, uses hard coded test data as csv input instead of stdin")
 }

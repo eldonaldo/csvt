@@ -20,10 +20,11 @@ type CSVObject struct {
 //	}
 //}
 
+// String prints the csv object as
 func (c *CSVObject) String() string {
 	var stringBuilder strings.Builder
 	if c.hasHeader {
-		stringBuilder.WriteString(strings.Join(c.Header, DefaultSep))
+		stringBuilder.WriteString(strings.Join(c.Header, FlagSeparator))
 		stringBuilder.WriteString(CRLF)
 	}
 
@@ -32,7 +33,7 @@ func (c *CSVObject) String() string {
 		for i, idx := range c.Header {
 			r[i] = row[idx]
 		}
-		stringBuilder.WriteString(strings.Join(r, DefaultSep))
+		stringBuilder.WriteString(strings.Join(r, FlagSeparator))
 
 		if j != len(c.Rows)-1 {
 			stringBuilder.WriteString(CRLF)

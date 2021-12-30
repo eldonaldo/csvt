@@ -10,8 +10,7 @@ import (
 )
 
 const (
-	CRLF       = "\n"
-	DefaultSep = ","
+	CRLF = "\n"
 )
 
 // ReadFromStdIn reads piped data from std in
@@ -78,7 +77,7 @@ func CSVSliceToString(slice [][]string) string {
 	for j, row := range slice {
 		for i, value := range row {
 			if i != 0 {
-				stringBuilder.WriteString(",")
+				stringBuilder.WriteString(FlagSeparator)
 			}
 			stringBuilder.WriteString(value)
 		}

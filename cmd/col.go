@@ -43,10 +43,10 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var csv internal.CSVObject
-		if FlagUseTestData {
-			csv = internal.ParseCSV("col1,col2,col3\nval1,val2,val3", FlagNoHeader)
+		if internal.FlagUseTestData {
+			csv = internal.ParseCSV("col1,col2,col3\nval1,val2,val3", internal.FlagNoHeader)
 		} else {
-			csv = internal.ParseCSV(internal.ReadFromStdIn(), FlagNoHeader)
+			csv = internal.ParseCSV(internal.ReadFromStdIn(), internal.FlagNoHeader)
 		}
 
 		fmt.Println(csv.String())
@@ -56,5 +56,5 @@ to quickly create a Cobra application.`,
 func init() {
 	filterCmd.AddCommand(colCmd)
 	colCmd.Flags().StringVar(&FlagColNames, "name", "", "Colum names to keep")
-	//_ = colCmd.MarkFlagRequired("name")
+	_ = colCmd.MarkFlagRequired("name")
 }
