@@ -34,13 +34,8 @@ var (
 // colCmd represents the col command
 var colCmd = &cobra.Command{
 	Use:   "col",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Filter operations on the columns",
+	Long:  `Column filtering operations such as dropping columns etc.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fields := strings.Split(FlagColNames, ",")
 		csv := internal.ReadCSV()
@@ -51,6 +46,6 @@ to quickly create a Cobra application.`,
 
 func init() {
 	filterCmd.AddCommand(colCmd)
-	colCmd.Flags().StringVar(&FlagColNames, "name", "", "Colum names to keep after filtering")
-	_ = colCmd.MarkFlagRequired("name")
+	colCmd.Flags().StringVar(&FlagColNames, "keep", "", "Colum names to keep after filtering")
+	_ = colCmd.MarkFlagRequired("keep")
 }

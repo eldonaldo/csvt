@@ -35,13 +35,8 @@ var (
 // flattenCmd represents the flatten command
 var flattenCmd = &cobra.Command{
 	Use:   "flatten",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Flattens the given csv using the specified separator",
+	Long:  `Flattens the given csv using the specified separator.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		csv := internal.ReadCSV()
 		flat, err := csv.Flatten(FlagFlattenSeparator)
