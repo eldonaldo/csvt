@@ -1,8 +1,8 @@
 # csvt - CSV Transform
 A CLI tool for easy CSV file transformations such as
 
-- Filtering by columns
-- Flatten the CSV table
+- Filtering by column names
+- Flatten the CSV into a single string
 
 Further operations might be added int the future, but these are the ones I mainly need now.
 
